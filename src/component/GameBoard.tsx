@@ -1,10 +1,10 @@
 import React from 'react';
 
-type Props = {
+type GameBoardProps = {
 	cellValues: string[][];
 };
 
-export default function GameBoard() {
+export default function GameBoard({ cellValues }: GameBoardProps) {
 	const rows = 6;
 	const columns = 5;
 	return (
@@ -15,7 +15,9 @@ export default function GameBoard() {
 						<div
 							key={`cell-${rowIndex}-${columnIndex}`}
 							className='border-2 border-solid border-black rounded m-1 h-12 w-12'
-						></div>
+						>
+							{cellValues[rowIndex][columnIndex]}
+						</div>
 					))}
 				</div>
 			))}
