@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
-import { WORDS } from './const/5words';
+import { COMMON_WORDS, ALL_WORDS } from './const/5words';
 import Modal from './component/modal/Modal';
 
 function App() {
 	const [answer, setAnswer] = useState(
-		WORDS[Math.floor(Math.random() * WORDS.length)]
+		COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
 	);
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
@@ -45,7 +45,7 @@ function App() {
 				.fill(null)
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
-		setAnswer(WORDS[Math.floor(Math.random() * WORDS.length)]);
+		setAnswer(COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]);
 	};
 
 	const isGameEnd = () => {
@@ -98,8 +98,11 @@ function App() {
 			});
 		} else if (key === 'enter') {
 			if (currentColumn === 5) {
-				if (!WORDS.includes(guess)) {
+				console.log('guess: ', guess);
+
+				if (!ALL_WORDS.includes(guess)) {
 					alert('단어 목록에 없습니다. 정확한 단어를 입력하셈');
+					console.log('틀림', guess);
 					// setGuess('');
 					return;
 				}

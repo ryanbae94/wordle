@@ -12975,5 +12975,5 @@ const words2 = [
 	'zymes',
 	'zymic',
 ];
-
-export const WORDS = [...words1, ...words2];
+export const COMMON_WORDS = [...words1];
+export const ALL_WORDS = [...words1, ...words2];
