@@ -119,7 +119,7 @@ function App() {
 	};
 
 	return (
-		<div className='flex flex-col h-screen justify-between'>
+		<div className='flex flex-col h-dvh md:h-screen gap-3 justify-between'>
 			<Header />
 			<GameBoard cellValues={cellValues} />
 			<Keyboard onKeyPress={handleKeyPress} cellValues={cellValues} />

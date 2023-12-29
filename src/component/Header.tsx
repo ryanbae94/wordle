@@ -35,7 +35,7 @@ export default function Header() {
 				></svg>
 			</div>
 
-			<h1 className='text-4xl font-bold'>WORDLE</h1>
+			<h1 className='text-xl md:text-4xl font-bold'>WORDLE</h1>
 			<div className='flex gap-2'>
 				<button onClick={clickRanking}>
 					<svg
