@@ -1,5 +1,7 @@
 # WORDLE 게임
 
+게임링크: ryanbae94.github.io/wordle
+
 ## 게임설명
 
 5음절의 영단어를 알아맞추는 게임입니다.
