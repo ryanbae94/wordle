@@ -1,6 +1,6 @@
 # WORDLE 게임
 
-게임링크: ryanbae94.github.io/wordle
+[게임하러가기](ryanbae94.github.io/wordle)
 
 ## 게임설명
 
