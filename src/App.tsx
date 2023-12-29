@@ -2,13 +2,19 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
 import { WORDS } from './const/5words';
+import Modal from './component/modal/Modal';
 
-const answer = WORDS[Math.floor(Math.random() * WORDS.length)];
+// const answer = WORDS[Math.floor(Math.random() * WORDS.length)];
 
 function App() {
+	const [answer, setAnswer] = useState(
+		WORDS[Math.floor(Math.random() * WORDS.length)]
+	);
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
 	const [guess, setGuess] = useState('');
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalMessage, setModalMessage] = useState('');
 
 	const [cellValues, setCellValues] = useState<
 		{ letter: string; color: string }[][]
@@ -20,8 +26,38 @@ function App() {
 
 	useEffect(() => {
 		console.log(answer);
-		console.log('cell', cellValues);
-	}, [cellValues]);
+	}, [answer]);
+
+	const openModal = (message: string) => {
+		setModalMessage(message);
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+		resetGame();
+	};
+
+	const resetGame = () => {
+		setCurrentRow(0);
+		setCurrentColumn(0);
+		setGuess('');
+		setCellValues(
+			Array(6)
+				.fill(null)
+				.map(() => Array(5).fill({ letter: '', color: '' }))
+		);
+		setAnswer(WORDS[Math.floor(Math.random() * WORDS.length)]);
+	};
+
+	const isGameEnd = () => {
+		if (guess === answer) {
+			openModal('정답입니다!');
+		}
+		if (currentRow === 5 && guess !== answer) {
+			openModal(`실패요... 정답은 ${answer}`);
+		}
+	};
 
 	const guessing = () => {
 		// 색상 업데이트를 먼저 진행
@@ -44,10 +80,8 @@ function App() {
 
 		// 상태 업데이트 후에 currentRow를 업데이트
 		setTimeout(() => {
-			if (guess === answer) {
-				alert('정답입니다!');
-			}
-			setCurrentRow(currentRow + 1);
+			isGameEnd();
+			setCurrentRow(Math.min(currentRow + 1, 6));
 			setGuess('');
 			setCurrentColumn(0);
 		}, 0);
@@ -67,8 +101,7 @@ function App() {
 		} else if (key === 'enter') {
 			if (currentColumn === 5) {
 				guessing();
-				// setCurrentRow(Math.min(currentRow + 1, 6));
-				// setCurrentColumn(0);
+				console.log('currentRow', currentRow);
 			}
 		} else {
 			setCellValues((prev) => {
@@ -88,6 +121,7 @@ function App() {
 			<Header />
 			<GameBoard cellValues={cellValues} />
 			<Keyboard onKeyPress={handleKeyPress} cellValues={cellValues} />
+			<Modal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
 		</div>
 	);
 }
