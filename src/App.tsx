@@ -100,7 +100,7 @@ function App() {
 			if (currentColumn === 5) {
 				if (!WORDS.includes(guess)) {
 					alert('단어 목록에 없습니다. 정확한 단어를 입력하셈');
-					setGuess('');
+					// setGuess('');
 					return;
 				}
 				guessing();
