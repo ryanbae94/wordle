@@ -61,13 +61,13 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 	}, [keys]);
 
 	return (
-		<div className='flex flex-col my-4 items-center gap-2'>
+		<div className='flex flex-col my-4 items-center gap-2 w-4/5 md:w-auto mx-auto'>
 			{keys.map((row, index) => (
 				<div key={index} className='flex'>
 					{row.map((key) => {
 						const keyColor = getKeyColor(key);
 						let className =
-							'flex font-bold p-2 mx-1 cursor-pointer uppercase border-2 ';
+							'flex font-bold p-1.5 mx-1 text-sm cursor-pointer uppercase border-2 ';
 						className += keyColor;
 						return (
 							<button
