@@ -4,8 +4,6 @@ import { GameBoard, Header, Keyboard } from './component';
 import { WORDS } from './const/5words';
 import Modal from './component/modal/Modal';
 
-// const answer = WORDS[Math.floor(Math.random() * WORDS.length)];
-
 function App() {
 	const [answer, setAnswer] = useState(
 		WORDS[Math.floor(Math.random() * WORDS.length)]
@@ -100,8 +98,12 @@ function App() {
 			});
 		} else if (key === 'enter') {
 			if (currentColumn === 5) {
+				if (!WORDS.includes(guess)) {
+					alert('단어 목록에 없습니다. 정확한 단어를 입력하셈');
+					setGuess('');
+					return;
+				}
 				guessing();
-				console.log('currentRow', currentRow);
 			}
 		} else {
 			setCellValues((prev) => {
