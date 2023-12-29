@@ -8,7 +8,7 @@ export default function GameBoard({ cellValues }: GameBoardProps) {
 	const rows = 6;
 	const columns = 5;
 	return (
-		<div className='flex flex-col'>
+		<div className='flex flex-col items-center'>
 			{Array.from({ length: rows }, (_, rowIndex) => (
 				<div key={`row-${rowIndex}`} className='flex flex-row'>
 					{Array.from({ length: columns }, (_, columnIndex) => {

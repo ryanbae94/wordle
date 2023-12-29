@@ -2,14 +2,43 @@ import React, { useEffect } from 'react';
 
 type KeyboardProps = {
 	onKeyPress: (key: string) => void;
+	cellValues: { letter: string; color: string }[][];
 };
 
-export default function Keyboard({ onKeyPress }: KeyboardProps) {
+export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 	const keys = [
 		['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
 		['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
 		['del', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter'],
 	];
+
+	const getKeyColor = (key: string): string => {
+		let color = '';
+		cellValues.forEach((row) => {
+			row.forEach((cell) => {
+				if (cell.letter === key) {
+					if (cell.color === 'green') {
+						color = cell.color;
+					} else if (cell.color === 'yellow' && color !== 'green') {
+						color = 'yellow';
+					} else if (cell.color === 'gray' && color === '') {
+						color = 'gray';
+					}
+				}
+			});
+		});
+		switch (color) {
+			case 'green':
+				return 'bg-green-200';
+			case 'yellow':
+				return 'bg-yellow-200';
+			case 'gray':
+				return 'bg-gray-400';
+			default:
+				return '';
+		}
+	};
+
 	useEffect(() => {
 		const handleKeyDown = (event: any) => {
 			if (event.key === 'Backspace') {
@@ -35,15 +64,21 @@ export default function Keyboard({ onKeyPress }: KeyboardProps) {
 		<div className='flex flex-col my-4 items-center gap-2'>
 			{keys.map((row, index) => (
 				<div key={index} className='flex'>
-					{row.map((key) => (
-						<button
-							key={key}
-							onClick={() => onKeyPress(key)}
-							className='flex font-bold p-2 mx-1 cursor-pointer uppercase border-2'
-						>
-							{key}
-						</button>
-					))}
+					{row.map((key) => {
+						const keyColor = getKeyColor(key);
+						let className =
+							'flex font-bold p-2 mx-1 cursor-pointer uppercase border-2 ';
+						className += keyColor;
+						return (
+							<button
+								key={key}
+								onClick={() => onKeyPress(key)}
+								className={className}
+							>
+								{key}
+							</button>
+						);
+					})}
 				</div>
 			))}
 		</div>
