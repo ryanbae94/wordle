@@ -61,21 +61,22 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 	}, [keys]);
 
 	return (
-		<div className='flex flex-col my-4 items-center gap-2 w-4/5 mx-auto'>
+		<div className='flex flex-col my-4 items-center gap-2 w-5/6 mx-auto'>
 			{keys.map((row, index) => (
-				<div key={index} className='flex'>
+				<div key={index} className='flex justify-center w-screen'>
 					{row.map((key) => {
 						const keyColor = getKeyColor(key);
 						let className =
-							'flex items-center justify-center font-bold md:w-20 p-1.5 mx-0.5 md:mx-1 md:text-xl text-m cursor-pointer uppercase border-2 ';
-						className += keyColor;
-						if (key === 'enter') {
-							className += ' w-19'; // enter 키에 대해 너비 증가
-						} else if (key === 'del') {
-							className += ' w-9'; // del 키에 대해 너비 감소
+							'flex items-center justify-center h-16 font-bold cursor-pointer uppercase border-2 mx-0.5 ';
+						className += `${keyColor}`;
+						if (key === 'del') {
+							className += ' w-9 lg:w-20';
+						} else if (key === 'enter') {
+							className += ' w-14 lg:w-24';
 						} else {
-							className += ' w-8 h-14'; // 나머지 키의 기본 크기
+							className += ' w-8 sm:w-9 lg:w-16';
 						}
+
 						return (
 							<button
 								key={key}
