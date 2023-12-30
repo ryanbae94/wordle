@@ -67,14 +67,14 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 					{row.map((key) => {
 						const keyColor = getKeyColor(key);
 						let className =
-							'flex items-center justify-center font-bold md:w-20 p-1.5 mx-1 md:text-xl text-m cursor-pointer uppercase border-2 ';
+							'flex items-center justify-center font-bold md:w-20 p-1.5 mx-0.5 md:mx-1 md:text-xl text-m cursor-pointer uppercase border-2 ';
 						className += keyColor;
 						if (key === 'enter') {
 							className += ' w-19'; // enter 키에 대해 너비 증가
 						} else if (key === 'del') {
 							className += ' w-9'; // del 키에 대해 너비 감소
 						} else {
-							className += ' w-7 h-14'; // 나머지 키의 기본 크기
+							className += ' w-8 h-14'; // 나머지 키의 기본 크기
 						}
 						return (
 							<button
