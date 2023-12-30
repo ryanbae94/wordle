@@ -99,7 +99,9 @@ function App() {
 
 				if (!ALL_WORDS.includes(guess)) {
 					const notify = () =>
-						toast('단어 목록에 없어요. 다른 단어를 입력 해보세요.');
+						toast('단어 목록에 없어요. 다른 단어를 입력 해보세요.', {
+							duration: 2000,
+						});
 					notify();
 					return;
 				}
