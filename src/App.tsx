@@ -3,6 +3,7 @@ import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
 import { COMMON_WORDS, ALL_WORDS } from './const/5words';
 import Modal from './component/modal/Modal';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
 	const [answer, setAnswer] = useState(
@@ -58,11 +59,8 @@ function App() {
 	};
 
 	const guessing = () => {
-		// 색상 업데이트를 먼저 진행
-		setCellValues((prevValues) => {
-			const newValues = prevValues.map((row) =>
-				row.map((cell) => ({ ...cell }))
-			);
+		setCellValues((prev) => {
+			const newValues = [...prev];
 
 			for (let i = 0; i < guess.length; i++) {
 				if (guess[i] === answer[i]) {
@@ -76,7 +74,6 @@ function App() {
 			return newValues;
 		});
 
-		// 상태 업데이트 후에 currentRow를 업데이트
 		setTimeout(() => {
 			isGameEnd();
 			setCurrentRow(Math.min(currentRow + 1, 6));
@@ -101,20 +98,23 @@ function App() {
 				console.log('guess: ', guess);
 
 				if (!ALL_WORDS.includes(guess)) {
-					alert('단어 목록에 없습니다. 정확한 단어를 입력하셈');
-					console.log('틀림', guess);
-					// setGuess('');
+					const notify = () =>
+						toast('단어 목록에 없어요. 다른 단어를 입력 해보세요.');
+					notify();
 					return;
 				}
 				guessing();
 			}
 		} else {
 			setCellValues((prev) => {
-				const newValues = prev.map((row) => row.map((cell) => ({ ...cell }))); // 깊은 복사
+				const newValues = [...prev];
 				if (currentColumn < 5) {
-					newValues[currentRow][currentColumn].letter = key;
-					setCurrentColumn(Math.min(currentColumn + 1, 5));
+					const newRow = [...newValues[currentRow]];
+					newRow[currentColumn] = { letter: key, color: '' };
+					newValues[currentRow] = newRow;
 					setGuess(guess + key);
+					setCurrentColumn(Math.min(currentColumn + 1, 5));
+					console.log('key: ', key);
 				}
 				return newValues;
 			});
@@ -123,6 +123,16 @@ function App() {
 
 	return (
 		<div className='flex flex-col h-dvh md:h-screen gap-3 justify-between'>
+			<Toaster
+				toastOptions={{
+					style: {
+						backgroundColor: '#f05650',
+					},
+				}}
+				containerStyle={{
+					top: 100,
+				}}
+			/>
 			<Header />
 			<GameBoard cellValues={cellValues} />
 			<Keyboard onKeyPress={handleKeyPress} cellValues={cellValues} />

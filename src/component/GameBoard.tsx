@@ -14,18 +14,20 @@ export default function GameBoard({ cellValues }: GameBoardProps) {
 					{Array.from({ length: columns }, (_, columnIndex) => {
 						const cell = cellValues[rowIndex][columnIndex];
 						let cellClassName =
-							'flex items-center justify-center border-2 border-solid border-black rounded m-1 h-12 w-12 text-4xl font-bold uppercase';
+							'flex items-center justify-center border-2 border-solid rounded m-1 h-12 w-12 text-4xl font-bold uppercase';
 						if (cell.color) {
 							if (cell.color === 'gray') {
-								cellClassName += ` bg-${cell.color}-400`;
+								cellClassName += ` bg-${cell.color}-400 animate-pop-in-bg-color`;
 							} else {
-								cellClassName += ` bg-${cell.color}-200`;
+								cellClassName += ` bg-${cell.color}-200 animate-pop-in-bg-color`;
 							}
 						}
+						const animationClass = cell.letter ? 'animate-pop-in' : '';
+						const borderClass = cell.letter ? 'border-black' : '';
 						return (
 							<div
 								key={`cell-${rowIndex}-${columnIndex}`}
-								className={cellClassName}
+								className={`${cellClassName} ${borderClass} ${animationClass}`}
 							>
 								{cell.letter}
 							</div>

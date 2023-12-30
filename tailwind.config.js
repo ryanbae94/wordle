@@ -6,6 +6,29 @@ module.exports = {
 			fontFamily: {
 				sans: ['Pretendard', 'sans-serif'],
 			},
+			keyframes: {
+				popIn: {
+					'0%': { transform: 'scale(1)', opacity: 0 },
+					'50%': { transform: 'scale(1.1)', opacity: 1 },
+					'100%': { transform: 'scale(1)', opacity: 1 },
+				},
+				popInBgColor: {
+					'0%': {
+						transform: 'scale(1)',
+						backgroundColor: 'transparent',
+					},
+					'50%': {
+						transform: 'scale(1.1)',
+					},
+					'100%': {
+						transform: 'scale(1)',
+					},
+				},
+			},
+			animation: {
+				'pop-in': 'popIn 0.15s ease-out',
+				'pop-in-bg-color': 'popInBgColor 0.15s ease-out',
+			},
 		},
 	},
 	plugins: [],
