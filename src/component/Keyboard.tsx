@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type KeyboardProps = {
 	onKeyPress: (key: string) => void;
@@ -11,6 +11,8 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 		['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
 		['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'del'],
 	];
+
+	const [touchUsed, setTouchUsed] = useState(false);
 
 	const getKeyColor = (key: string): string => {
 		let color = '';
@@ -37,6 +39,18 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 			default:
 				return '';
 		}
+	};
+
+	const handleClick = (key: string) => {
+		if (!touchUsed) {
+			onKeyPress(key);
+		}
+		setTouchUsed(false);
+	};
+
+	const handleTouch = (key: string) => {
+		setTouchUsed(true);
+		onKeyPress(key);
 	};
 
 	useEffect(() => {
@@ -80,7 +94,8 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 						return (
 							<button
 								key={key}
-								onClick={() => onKeyPress(key)}
+								onClick={() => handleClick(key)}
+								onTouchEnd={() => handleTouch(key)}
 								className={className}
 							>
 								{key}
