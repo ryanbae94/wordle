@@ -9,7 +9,7 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 	const keys = [
 		['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
 		['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-		['del', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter'],
+		['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'del'],
 	];
 
 	const getKeyColor = (key: string): string => {
@@ -67,14 +67,14 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 					{row.map((key) => {
 						const keyColor = getKeyColor(key);
 						let className =
-							'flex items-center justify-center h-16 font-bold cursor-pointer uppercase border-2 mx-0.5 ';
-						className += `${keyColor}`;
+							'flex items-center justify-center h-16 font-bold cursor-pointer uppercase border-2 border-gray-300 mx-0.5 rounded bg-gray-300';
+						className += ` ${keyColor}`;
 						if (key === 'del') {
-							className += ' w-9 lg:w-20';
+							className += ' w-9 sm:w-10 lg:w-20';
 						} else if (key === 'enter') {
-							className += ' w-14 lg:w-24';
+							className += ' w-14 sm:w-16 lg:w-24';
 						} else {
-							className += ' w-8 sm:w-9 lg:w-16';
+							className += ' w-8 xsm:w-9 sm:w-10 md:w-12 lg:w-20';
 						}
 
 						return (

@@ -30,6 +30,12 @@ module.exports = {
 				'pop-in-bg-color': 'popInBgColor 0.15s ease-out',
 			},
 		},
+		screens: {
+			xxsm: '375px',
+			xsm: '390px',
+			sm: '430px',
+			lg: '800px',
+		},
 	},
 	plugins: [],
 };
