@@ -55,15 +55,19 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 
 	useEffect(() => {
 		const handleKeyDown = (event: any) => {
-			if (event.key === 'Backspace') {
-				onKeyPress('del');
-			} else if (event.key === 'Enter') {
-				onKeyPress('enter');
-			} else {
-				const key = event.key.toLowerCase();
-				if (keys.flat().includes(key)) {
-					onKeyPress(key);
-				}
+			switch (event.key) {
+				case 'Backspace':
+					onKeyPress('del');
+					break;
+				case 'Enter':
+					onKeyPress('enter');
+					break;
+				default:
+					const key = event.key.toLowerCase();
+					if (keys.flat().includes(key)) {
+						onKeyPress(key);
+					}
+					break;
 			}
 		};
 
@@ -83,12 +87,16 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 						let className =
 							'flex items-center justify-center h-16 font-bold cursor-pointer uppercase border-2 border-gray-300 mx-0.5 rounded bg-gray-300';
 						className += ` ${keyColor}`;
-						if (key === 'del') {
-							className += ' w-9 sm:w-10 lg:w-20';
-						} else if (key === 'enter') {
-							className += ' w-14 sm:w-16 lg:w-24';
-						} else {
-							className += ' w-8 xsm:w-9 sm:w-10 md:w-12 lg:w-20';
+
+						switch (key) {
+							case 'del':
+								className += ' w-9 sm:w-10 lg:w-20';
+								break;
+							case 'enter':
+								className += ' w-14 sm:w-16 lg:w-24';
+								break;
+							default:
+								className += ' w-8 xsm:w-9 sm:w-10 md:w-12 lg:w-20';
 						}
 
 						return (
