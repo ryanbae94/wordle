@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
-import { COMMON_WORDS, ALL_WORDS } from './const/5words';
-import Modal from './component/modal/Modal';
+import { ALL_WORDS, EASY_WORDS } from './const/5words';
+import WinModal from './component/modal/WinModal';
 import toast, { Toaster } from 'react-hot-toast';
+import InfoModal from './component/modal/InfoModal';
+import LoseModal from './component/modal/LoseModal';
 
 function App() {
 	const [answer, setAnswer] = useState(
-		COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
+		EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]
 	);
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
 	const [guess, setGuess] = useState('');
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [modalMessage, setModalMessage] = useState('');
+	const [isWinModalOpen, setIsWinModalOpen] = useState(false);
+	const [isLoseModalOpen, setIsLoseModalOpen] = useState(false);
+
+	const [isHelpModalOpen, setIsHelpModalOpen] = useState(true);
 
 	const [cellValues, setCellValues] = useState<
 		{ letter: string; color: string }[][]
@@ -27,14 +31,28 @@ function App() {
 		console.log(answer);
 	}, [answer]);
 
-	const openModal = (message: string) => {
-		setModalMessage(message);
-		setIsModalOpen(true);
+	const openWinModal = (answer: string) => {
+		setIsWinModalOpen(true);
 	};
 
-	const closeModal = () => {
-		setIsModalOpen(false);
+	const closeWinModalAndResetGame = () => {
+		setIsWinModalOpen(false);
 		resetGame();
+	};
+	const openLoseModal = (answer: string) => {
+		setIsLoseModalOpen(true);
+	};
+
+	const closeLoseModalAndResetGame = () => {
+		setIsLoseModalOpen(false);
+		resetGame();
+	};
+
+	const openHelpModal = () => {
+		setIsHelpModalOpen(true);
+	};
+	const closeHelpModal = () => {
+		setIsHelpModalOpen(false);
 	};
 
 	const resetGame = () => {
@@ -46,15 +64,15 @@ function App() {
 				.fill(null)
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
-		setAnswer(COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]);
+		setAnswer(EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]);
 	};
 
 	const isGameEnd = () => {
 		if (guess === answer) {
-			openModal('정답입니다!');
+			openWinModal(answer);
 		}
 		if (currentRow === 5 && guess !== answer) {
-			openModal(`실패요... 정답은 ${answer}`);
+			openLoseModal(answer);
 		}
 	};
 
@@ -135,10 +153,22 @@ function App() {
 					top: 100,
 				}}
 			/>
-			<Header />
+			<Header onHelpClick={openHelpModal} />
 			<GameBoard cellValues={cellValues} />
 			<Keyboard onKeyPress={handleKeyPress} cellValues={cellValues} />
-			<Modal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
+			<WinModal
+				isOpen={isWinModalOpen}
+				onClose={closeWinModalAndResetGame}
+				answer={answer}
+			/>
+			<LoseModal
+				isOpen={isLoseModalOpen}
+				onClose={closeLoseModalAndResetGame}
+				answer={answer}
+			/>
+			{isHelpModalOpen && (
+				<InfoModal isOpen={isHelpModalOpen} onClose={closeHelpModal} />
+			)}
 		</div>
 	);
 }

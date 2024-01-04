@@ -1,8 +1,12 @@
 import React from 'react';
 
-export default function Header() {
+type HeaderProps = {
+	onHelpClick: () => void;
+};
+
+export default function Header({ onHelpClick }: HeaderProps) {
 	const clickHelp = () => {
-		alert('아직 구현되지 않은 기능입니다.');
+		onHelpClick();
 	};
 	const clickRanking = () => {
 		alert('아직 구현되지 않은 기능입니다.');
