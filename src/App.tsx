@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
-import { ALL_WORDS, EASY_WORDS } from './const/5words';
+import { ALL_WORDS, COMMON_WORDS, EASY_WORDS } from './const/5words';
 import WinModal from './component/modal/WinModal';
 import toast, { Toaster } from 'react-hot-toast';
 import InfoModal from './component/modal/InfoModal';
@@ -11,14 +11,13 @@ function App() {
 	const [answer, setAnswer] = useState(
 		EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]
 	);
+	const [hardMode, setHardMode] = useState(false);
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
 	const [guess, setGuess] = useState('');
 	const [isWinModalOpen, setIsWinModalOpen] = useState(false);
 	const [isLoseModalOpen, setIsLoseModalOpen] = useState(false);
-
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(true);
-
 	const [cellValues, setCellValues] = useState<
 		{ letter: string; color: string }[][]
 	>(
@@ -29,7 +28,13 @@ function App() {
 
 	useEffect(() => {
 		console.log(answer);
-	}, [answer]);
+		console.log('mode: ', hardMode);
+	}, [answer, hardMode]);
+
+	const handleMode = () => {
+		setHardMode(!hardMode);
+		resetGame();
+	};
 
 	const openWinModal = (answer: string) => {
 		setIsWinModalOpen(true);
@@ -64,7 +69,12 @@ function App() {
 				.fill(null)
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
-		setAnswer(EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]);
+		if (!hardMode) {
+			setAnswer(EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]);
+		}
+		if (hardMode) {
+			setAnswer(COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]);
+		}
 	};
 
 	const isGameEnd = () => {
@@ -154,7 +164,12 @@ function App() {
 				}}
 			/>
 			<Header onHelpClick={openHelpModal} />
-			<GameBoard cellValues={cellValues} />
+			<GameBoard
+				cellValues={cellValues}
+				mode={hardMode}
+				switchMode={handleMode}
+			/>
+
 			<Keyboard onKeyPress={handleKeyPress} cellValues={cellValues} />
 			<WinModal
 				isOpen={isWinModalOpen}

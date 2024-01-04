@@ -2,9 +2,15 @@ import React from 'react';
 
 type GameBoardProps = {
 	cellValues: { letter: string; color: string }[][];
+	mode: boolean;
+	switchMode: () => void;
 };
 
-export default function GameBoard({ cellValues }: GameBoardProps) {
+export default function GameBoard({
+	cellValues,
+	mode,
+	switchMode,
+}: GameBoardProps) {
 	const rows = 6;
 	const columns = 5;
 	return (
@@ -14,7 +20,7 @@ export default function GameBoard({ cellValues }: GameBoardProps) {
 					{Array.from({ length: columns }, (_, columnIndex) => {
 						const cell = cellValues[rowIndex][columnIndex];
 						let cellClassName =
-							'flex items-center justify-center border-2 border-solid rounded m-1 h-12 w-12 lg:h-20 lg:w-20 text-4xl font-bold uppercase';
+							'flex items-center justify-center border-2 border-solid rounded m-1 h-11 w-11 sm:h-14 sm:w-14 lg:h-20 lg:w-20 text-4xl font-bold uppercase';
 						if (cell.color) {
 							if (cell.color === 'gray') {
 								cellClassName += ` bg-${cell.color}-400 animate-pop-in-bg-color`;
@@ -35,6 +41,12 @@ export default function GameBoard({ cellValues }: GameBoardProps) {
 					})}
 				</div>
 			))}
+			<button
+				className='text-xs mt-4 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
+				onClick={switchMode}
+			>
+				{mode ? '너무 어려워 돌아갈래' : '아 이건 너무 쉬운데요'}
+			</button>
 		</div>
 	);
 }

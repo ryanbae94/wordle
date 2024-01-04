@@ -28,9 +28,9 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 						<h1 className='font-bold text-xl leading-6'>어떻게 할까?</h1>
 						<div className='mt-2'>
 							<p className='text-sm text-gray-500'>
-								다섯 개의 알파벳으로 이루어진 영어 단어 'WORDLE'을 여섯 번의
-								도전 안에 맞혀봅시다. 단어를 작성한 후 'ENTER'를 누르면 칸
-								색깔이 변합니다!
+								다섯 개의 알파벳으로 이루어진 영어 단어를 여섯 번의 도전 안에
+								맞혀봅시다. 단어를 작성한 후 'ENTER'를 누르면 칸 색깔이
+								변합니다!
 							</p>
 							<div className='flex justify-center mb-1 mt-4'>
 								<div className='w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-2xl font-bold rounded bg-green-200  border-black cell-animation'>
@@ -91,6 +91,18 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 							</div>
 							<p className='text-sm text-gray-500'>
 								'C'는 어느 곳에도 맞지 않습니다.
+							</p>
+							<button
+								className='mt-2 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white sm:text-sm uppercase'
+								disabled
+							>
+								아 이건 너무 쉬운데요
+							</button>
+							<p className='mt-2 text-sm text-gray-500'>
+								박스 하단의 버튼을 눌러 단어의 난이도를 변경할 수 있습니다.
+								난이도 변경 시
+								<span className='text-red-500'> 게임이 리셋 </span> 됩니다.
+								<br /> 기본 설정은 쉬움 난이도 입니다.
 							</p>
 						</div>
 					</div>
