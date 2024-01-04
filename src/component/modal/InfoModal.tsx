@@ -93,7 +93,7 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 								'C'는 어느 곳에도 맞지 않습니다.
 							</p>
 							<button
-								className='mt-2 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 text-indigo-700 font-medium  sm:text-sm uppercase'
+								className='mt-4 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 text-indigo-700 font-medium  sm:text-sm uppercase'
 								disabled
 							>
 								아 이건 너무 쉬운데요
