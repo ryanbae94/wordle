@@ -42,7 +42,7 @@ export default function GameBoard({
 				</div>
 			))}
 			<button
-				className='text-xs mt-4 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
+				className='text-xs mt-4 text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
 				onClick={switchMode}
 			>
 				{mode ? '너무 어려워 돌아갈래' : '아 이건 너무 쉬운데요'}
