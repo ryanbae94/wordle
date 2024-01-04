@@ -31,7 +31,7 @@ export default function WinModal({ isOpen, onClose, answer }: ModalProps) {
 					</div>
 				</div>
 				<button
-					className='flex items-center justify-center mx-auto mt-4 rounded border-solid border-2 border-blue-400 bg-blue-400 w-1/3 h-10 text-white cursor-pointer hover:bg-blue-600'
+					className='mt-5 w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm'
 					onClick={onClose}
 				>
 					한 판 더!
