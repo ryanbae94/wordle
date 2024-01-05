@@ -12985,8 +12985,8 @@ const words3 = [
 
 // words1 => ALL
 // words2 => 중, 고등단어
-// words3 => COMMON 중 words2 제외
+// words3 => 어려운 단어
 
-export const COMMON_WORDS = [...words3];
 export const ALL_WORDS = [...words1, ...words2, ...words3];
 export const EASY_WORDS = [...words2];
+export const HARD_WORDS = [...words3];

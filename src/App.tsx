@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
-import { ALL_WORDS, COMMON_WORDS, EASY_WORDS } from './const/5words';
+import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal, LoseModal, WinModal } from './component/modal';
@@ -70,7 +70,7 @@ function App() {
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
 		const newAnswer = mode
-			? COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
+			? HARD_WORDS[Math.floor(Math.random() * HARD_WORDS.length)]
 			: EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)];
 		setAnswer(newAnswer);
 	};
