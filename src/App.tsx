@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
 import { ALL_WORDS, COMMON_WORDS, EASY_WORDS } from './const/5words';
-import WinModal from './component/modal/WinModal';
+
 import toast, { Toaster } from 'react-hot-toast';
-import InfoModal from './component/modal/InfoModal';
-import LoseModal from './component/modal/LoseModal';
+import { InfoModal, LoseModal, WinModal } from './component/modal';
 
 function App() {
 	const [answer, setAnswer] = useState(
