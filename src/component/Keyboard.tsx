@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 type KeyboardProps = {
 	onKeyPress: (key: string) => void;
@@ -6,11 +6,14 @@ type KeyboardProps = {
 };
 
 export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
-	const keys = [
-		['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-		['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-		['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'del'],
-	];
+	const keys = useMemo(
+		() => [
+			['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+			['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+			['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'del'],
+		],
+		[]
+	);
 
 	const [touchUsed, setTouchUsed] = useState(false);
 
@@ -76,7 +79,7 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [onKeyPress]);
+	}, [onKeyPress, keys]);
 
 	return (
 		<div className='flex flex-col my-4 items-center gap-2 w-5/6 mx-auto'>
