@@ -31,8 +31,9 @@ function App() {
 	}, [answer, hardMode]);
 
 	const handleMode = () => {
-		setHardMode(!hardMode);
-		resetGame();
+		const newMode = !hardMode;
+		setHardMode(newMode);
+		resetGame(newMode);
 	};
 
 	const openWinModal = (answer: string) => {
@@ -41,7 +42,7 @@ function App() {
 
 	const closeWinModalAndResetGame = () => {
 		setIsWinModalOpen(false);
-		resetGame();
+		resetGame(hardMode);
 	};
 	const openLoseModal = (answer: string) => {
 		setIsLoseModalOpen(true);
@@ -49,7 +50,7 @@ function App() {
 
 	const closeLoseModalAndResetGame = () => {
 		setIsLoseModalOpen(false);
-		resetGame();
+		resetGame(hardMode);
 	};
 
 	const openHelpModal = () => {
@@ -59,7 +60,7 @@ function App() {
 		setIsHelpModalOpen(false);
 	};
 
-	const resetGame = () => {
+	const resetGame = (mode: boolean) => {
 		setCurrentRow(0);
 		setCurrentColumn(0);
 		setGuess('');
@@ -68,12 +69,10 @@ function App() {
 				.fill(null)
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
-		if (!hardMode) {
-			setAnswer(EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]);
-		}
-		if (hardMode) {
-			setAnswer(COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]);
-		}
+		const newAnswer = mode
+			? COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)]
+			: EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)];
+		setAnswer(newAnswer);
 	};
 
 	const isGameEnd = () => {
