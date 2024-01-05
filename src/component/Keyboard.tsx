@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 type KeyboardProps = {
 	onKeyPress: (key: string) => void;
@@ -76,7 +76,7 @@ export default function Keyboard({ onKeyPress, cellValues }: KeyboardProps) {
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [keys]);
+	}, [onKeyPress]);
 
 	return (
 		<div className='flex flex-col my-4 items-center gap-2 w-5/6 mx-auto'>
