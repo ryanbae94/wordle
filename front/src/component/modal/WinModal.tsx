@@ -17,7 +17,7 @@ export default function WinModal({ isOpen, onClose, answer }: ModalProps) {
 					<div className='text-center'>
 						<h1 className='font-bold text-2xl leading-6'>정답입니다!</h1>
 						<div className='mt-2'>
-							<p className='text-sm text-gray-500'>너 재능있어. 열심히 해.</p>
+							<p className='text-sm text-gray-500'>당신의 재능이 부럽네요.</p>
 							<div className='flex justify-center mb-1 mt-4'>
 								{Array.from({ length: answer.length }, (_, answerIndex) => {
 									return (

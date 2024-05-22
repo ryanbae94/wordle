@@ -4,7 +4,9 @@ import { GameBoard, Header, Keyboard } from './component';
 import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
-import { InfoModal, LoseModal, WinModal } from './component/modal';
+import { InfoModal } from './component/modal';
+const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
+const WinModal = React.lazy(() => import('./component/modal/WinModal'));
 
 function App() {
 	const [answer, setAnswer] = useState(

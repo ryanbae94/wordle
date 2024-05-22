@@ -17,9 +17,7 @@ export default function LoseModal({ isOpen, onClose, answer }: ModalProps) {
 					<div className='text-center'>
 						<h1 className='font-bold text-2xl leading-6'>실패했습니다!</h1>
 						<div className='mt-2'>
-							<p className='text-sm text-gray-500'>
-								너 운 없어. 다시 도전 해봐.
-							</p>
+							<p className='text-sm text-gray-500'>다시 한 번 도전해보세요!</p>
 							<div className='flex justify-center mb-1 mt-4'>
 								{Array.from({ length: answer.length }, (_, answerIndex) => {
 									return (
