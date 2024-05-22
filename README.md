@@ -4,7 +4,7 @@
 
 ## 게임설명
 
-![Alt text](./public/image.png)
+![Alt text](front/public/image.png)
 
 install dependencies:
 
