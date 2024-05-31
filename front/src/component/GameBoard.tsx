@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 type GameBoardProps = {
 	cellValues: { letter: string; color: string }[][];
@@ -13,6 +13,9 @@ export default function GameBoard({
 }: GameBoardProps) {
 	const rows = 6;
 	const columns = 5;
+	useEffect(() => {
+		console.log('rendering');
+	}, [cellValues]);
 	return (
 		<div className='flex flex-col items-center'>
 			{Array.from({ length: rows }, (_, rowIndex) => (

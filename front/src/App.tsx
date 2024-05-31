@@ -129,11 +129,24 @@ function App() {
 					const notify = () =>
 						toast('단어 목록에 없어요. 다른 단어를 입력 해보세요.', {
 							duration: 2000,
+							style: {
+								backgroundColor: '#f05650',
+							},
 						});
 					notify();
 					return;
 				}
 				guessing();
+			} else {
+				const notify = () => {
+					toast('단어는 5글자로 입력해주세요.', {
+						duration: 2000,
+						style: {
+							backgroundColor: '#ffff99',
+						},
+					});
+				};
+				notify();
 			}
 		} else {
 			setCellValues((prev) => {
@@ -154,11 +167,6 @@ function App() {
 	return (
 		<div className='flex flex-col h-dvh md:h-screen gap-3 justify-between'>
 			<Toaster
-				toastOptions={{
-					style: {
-						backgroundColor: '#f05650',
-					},
-				}}
 				containerStyle={{
 					top: 100,
 				}}
