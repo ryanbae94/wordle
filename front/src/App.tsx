@@ -147,6 +147,7 @@ function App() {
 					});
 				};
 				notify();
+				return;
 			}
 		} else {
 			setCellValues((prev) => {
