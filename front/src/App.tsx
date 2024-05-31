@@ -32,6 +32,24 @@ function App() {
 		console.log('mode: ', hardMode);
 	}, [answer, hardMode]);
 
+	const notWordToast = () => {
+		toast('단어 목록에 없어요. 다른 단어를 입력 해보세요.', {
+			duration: 2000,
+			style: {
+				backgroundColor: '#f05650',
+			},
+		});
+	};
+
+	const notFiveCharToast = () => {
+		toast('단어는 5글자로 입력해주세요.', {
+			duration: 2000,
+			style: {
+				backgroundColor: '#ffff99',
+			},
+		});
+	};
+
 	const handleMode = () => {
 		const newMode = !hardMode;
 		setHardMode(newMode);
@@ -126,27 +144,12 @@ function App() {
 				console.log('guess: ', guess);
 
 				if (!ALL_WORDS.includes(guess)) {
-					const notify = () =>
-						toast('단어 목록에 없어요. 다른 단어를 입력 해보세요.', {
-							duration: 2000,
-							style: {
-								backgroundColor: '#f05650',
-							},
-						});
-					notify();
+					notWordToast();
 					return;
 				}
 				guessing();
 			} else {
-				const notify = () => {
-					toast('단어는 5글자로 입력해주세요.', {
-						duration: 2000,
-						style: {
-							backgroundColor: '#ffff99',
-						},
-					});
-				};
-				notify();
+				notFiveCharToast();
 				return;
 			}
 		} else {
