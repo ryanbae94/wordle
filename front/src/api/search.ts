@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const client = axios.create({
-  baseURL: 'https://openapi.naver.com',
+  //   baseURL: 'https://openapi.naver.com',
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*/*',
