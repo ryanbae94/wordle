@@ -28,13 +28,23 @@ function App() {
       .map(() => Array(5).fill({ letter: '', color: '' })),
   );
 
+  const fetchAnswer = async () => {
+    const result = await searchWord(answer);
+    console.log(result);
+  };
+
+  // 게임이 시작할 때 마다 단어 뜻 미리 검색
+  useEffect(() => {
+    fetchAnswer();
+  }, [answer]);
+
   useEffect(() => {
     console.log(answer);
     console.log('mode: ', hardMode);
   }, [answer, hardMode]);
 
   const notWordToast = () => {
-    toast('올바른 단어가 아닙니다. 다른 단어를 입력해 보세요.', {
+    toast('올바른 단어가 아닙니다.\n다른 단어를 입력해 보세요.', {
       duration: 2000,
       style: {
         backgroundColor: '#f05650',
@@ -106,8 +116,6 @@ function App() {
   };
 
   const guessing = async () => {
-    const result = await searchWord(guess);
-    console.log(result);
     setCellValues((prev) => {
       const newValues = [...prev];
 
@@ -134,15 +142,17 @@ function App() {
 
   const handleKeyPress = (key: string) => {
     if (key === 'del') {
-      setCellValues((prev) => {
-        const newValues = [...prev];
-        if (currentColumn > 0) {
-          newValues[currentRow][currentColumn - 1].letter = '';
-          setCurrentColumn(Math.max(currentColumn - 1, 0));
-          setGuess(guess.slice(0, -1));
-        }
-        return newValues;
-      });
+      if (currentColumn >= 1) {
+        setCellValues((prev) => {
+          const newValues = [...prev];
+          if (currentColumn > 0) {
+            newValues[currentRow][currentColumn - 1].letter = '';
+            setCurrentColumn(Math.max(currentColumn - 1, 0));
+            setGuess(guess.slice(0, -1));
+          }
+          return newValues;
+        });
+      }
     } else if (key === 'enter') {
       if (currentColumn === 5) {
         console.log('guess: ', guess);
@@ -157,17 +167,19 @@ function App() {
         return;
       }
     } else {
-      setCellValues((prev) => {
-        const newValues = [...prev];
-        if (currentColumn < 5) {
-          const newRow = [...newValues[currentRow]];
-          newRow[currentColumn] = { letter: key, color: '' };
-          newValues[currentRow] = newRow;
-          setGuess(guess + key);
-          setCurrentColumn(Math.min(currentColumn + 1, 5));
-        }
-        return newValues;
-      });
+      if (currentColumn < 5) {
+        setCellValues((prev) => {
+          const newValues = [...prev];
+          if (currentColumn < 5) {
+            const newRow = [...newValues[currentRow]];
+            newRow[currentColumn] = { letter: key, color: '' };
+            newValues[currentRow] = newRow;
+            setGuess(guess + key);
+            setCurrentColumn(Math.min(currentColumn + 1, 5));
+          }
+          return newValues;
+        });
+      }
     }
   };
 
