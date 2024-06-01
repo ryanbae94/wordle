@@ -5,6 +5,7 @@ import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
+import { searchWord } from './api/search';
 const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
 const WinModal = React.lazy(() => import('./component/modal/WinModal'));
 
@@ -104,7 +105,9 @@ function App() {
     }
   };
 
-  const guessing = () => {
+  const guessing = async () => {
+    const result = await searchWord(guess);
+    console.log(result);
     setCellValues((prev) => {
       const newValues = [...prev];
 
@@ -117,6 +120,7 @@ function App() {
           newValues[currentRow][i].color = 'gray';
         }
       }
+
       return newValues;
     });
 
@@ -161,7 +165,6 @@ function App() {
           newValues[currentRow] = newRow;
           setGuess(guess + key);
           setCurrentColumn(Math.min(currentColumn + 1, 5));
-          console.log('key: ', key);
         }
         return newValues;
       });
