@@ -25,7 +25,7 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 				</div>
 				<div>
 					<div className='text-center'>
-						<h1 className='font-bold text-xl leading-6'>어떻게 할까?</h1>
+						<h1 className='font-bold text-xl leading-6'>How To Play</h1>
 						<div className='mt-2'>
 							<p className='text-sm text-gray-500'>
 								다섯 개의 알파벳으로 이루어진 영어 단어를 여섯 번의 도전 안에
@@ -50,7 +50,8 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 								</div>
 							</div>
 							<p className='text-sm text-gray-500'>
-								'P'는 올바른 자리에 있습니다.
+								'P'는 <span className='font-bold text-black'>올바른 자리</span>
+								에 있습니다.
 							</p>
 							<div className='flex justify-center mb-1 mt-4'>
 								<div className='w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-2xl font-bold rounded bg-white  border-black cell-animation'>
@@ -70,7 +71,8 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 								</div>
 							</div>
 							<p className='text-sm text-gray-500'>
-								'I'는 잘못된 자리에 있습니다.
+								'I'는 <span className='font-bold text-black'>잘못된 자리</span>
+								에 있습니다.
 							</p>
 							<div className='flex justify-center mb-1 mt-4'>
 								<div className='w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-2xl font-bold rounded bg-white  border-black cell-animation'>
@@ -92,17 +94,29 @@ export default function InfoModal({ isOpen, onClose }: ModalProps) {
 							<p className='text-sm text-gray-500'>
 								'C'는 어느 곳에도 맞지 않습니다.
 							</p>
-							<button
-								className='mt-4 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 text-indigo-700 font-medium  sm:text-sm uppercase'
-								disabled
-							>
-								아 이건 너무 쉬운데요
-							</button>
+							<div className='flex gap-6 mt-4 justify-center'>
+								<div className='flex justify-center items-center gap-2'>
+									<span className='text-m font-bold'>Mode: </span>
+									<button
+										className='text-xs text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium lg:text-sm uppercase'
+										disabled
+									>
+										Easy
+									</button>
+								</div>
+								<div className='flex justify-center items-center gap-2'>
+									<span className='text-m font-bold'>AI: </span>
+									<button
+										className='text-xs text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium lg:text-sm uppercase'
+										disabled
+									>
+										OFF
+									</button>
+								</div>
+							</div>
 							<p className='mt-2 text-sm text-gray-500'>
-								박스 하단의 버튼을 눌러 단어의 난이도를 변경할 수 있습니다.
-								난이도 변경 시
-								<span className='text-red-500'> 게임이 리셋 </span> 됩니다.
-								<br /> 기본 설정은 쉬움 난이도 입니다.
+								하단의 버튼을 눌러 난이도와 AI 모드를 변경할 수 있습니다.
+								<span className='text-red-500'> AI는 무자비 </span> 합니다.
 							</p>
 						</div>
 					</div>

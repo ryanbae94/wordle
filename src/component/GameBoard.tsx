@@ -3,13 +3,17 @@ import React, { useEffect } from 'react';
 type GameBoardProps = {
 	cellValues: { letter: string; color: string }[][];
 	mode: boolean;
+	aiMode: boolean;
 	switchMode: () => void;
+	switchAiMode: () => void;
 };
 
 export default function GameBoard({
 	cellValues,
 	mode,
+	aiMode,
 	switchMode,
+	switchAiMode,
 }: GameBoardProps) {
 	const rows = 6;
 	const columns = 5;
@@ -44,12 +48,27 @@ export default function GameBoard({
 					})}
 				</div>
 			))}
-			<button
-				className='text-xs mt-4 text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
-				onClick={switchMode}
-			>
-				{mode ? '너무 어려워 돌아갈래' : '아 이건 너무 쉬운데요'}
-			</button>
+
+			<div className='flex gap-6 mt-4'>
+				<div className='flex justify-center items-center gap-2'>
+					<span className='text-m font-bold'>Mode: </span>
+					<button
+						className='text-xs text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
+						onClick={switchMode}
+					>
+						{mode ? 'Hard' : 'Easy'}
+					</button>
+				</div>
+				<div className='flex justify-center items-center gap-2'>
+					<span className='text-m font-bold'>AI: </span>
+					<button
+						className='text-xs text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
+						onClick={switchAiMode}
+					>
+						{aiMode ? 'ON' : 'OFF'}
+					</button>
+				</div>
+			</div>
 		</div>
 	);
 }

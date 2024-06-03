@@ -5,9 +5,8 @@ import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
-import { searchWord } from './api/search';
-import { aiGuess } from './lib/aiBattle';
-import AiWinModal from './component/modal/AiWinModal';
+import { aiGuess } from './lib/aiGuess';
+const AiWinModal = React.lazy(() => import('./component/modal/AiWinModal'));
 const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
 const WinModal = React.lazy(() => import('./component/modal/WinModal'));
 
@@ -16,7 +15,7 @@ function App() {
 		EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]
 	);
 	const [hardMode, setHardMode] = useState(false);
-	const [aiMode, setAiMode] = useState(true);
+	const [aiMode, setAiMode] = useState(false);
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
 	const [guess, setGuess] = useState('');
@@ -35,7 +34,7 @@ function App() {
 	);
 
 	const notWordToast = () => {
-		toast('올바른 단어가 아닙니다.\n다른 단어를 입력해 보세요.', {
+		toast('올바른 단어가 아닙니다.', {
 			duration: 2000,
 			style: {
 				backgroundColor: '#f05650',
@@ -190,15 +189,27 @@ function App() {
 		}
 	};
 
+	const handleAiMode = () => {
+		const newMode = !aiMode;
+		setAiMode(newMode);
+		resetGame(newMode);
+	};
+
 	useEffect(() => {
-		if (aiMode && hardMode && turn % 2 === 1 && turn < 6) {
+		let timer: NodeJS.Timeout;
+		if (aiMode && turn % 2 === 1 && turn < 6) {
 			setAiTyping(true);
-			setTimeout(() => {
+			timer = setTimeout(() => {
 				aiGuessing();
 				setAiTyping(false);
 			}, Math.floor(Math.random() * (4500 - 2000)) + 2000);
 		}
-	}, [aiMode, hardMode, turn, cellValues, answer, currentRow]);
+
+		return () => {
+			clearTimeout(timer);
+			setAiTyping(false);
+		};
+	}, [aiMode, turn, cellValues, answer, currentRow]);
 
 	const handleKeyPress = (key: string) => {
 		if (key === 'del') {
@@ -244,7 +255,7 @@ function App() {
 	};
 
 	return (
-		<div className='flex flex-col h-dvh md:h-screen gap-3 justify-between'>
+		<div className='flex flex-col h-dvh md:h-screen gap-3 justify-between items-center'>
 			<Toaster
 				containerStyle={{
 					top: 100,
@@ -255,6 +266,8 @@ function App() {
 				cellValues={cellValues}
 				mode={hardMode}
 				switchMode={handleMode}
+				aiMode={aiMode}
+				switchAiMode={handleAiMode}
 			/>
 
 			<Keyboard
