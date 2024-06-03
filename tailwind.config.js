@@ -24,10 +24,16 @@ module.exports = {
 						transform: 'scale(1)',
 					},
 				},
+				opacityIn: {
+					'50%': {
+						opacity: 0,
+					},
+				},
 			},
 			animation: {
 				'pop-in': 'popIn 0.15s ease-out',
 				'pop-in-bg-color': 'popInBgColor 0.15s ease-out',
+				'opacity-in': 'opacityIn 1.5s ease-in-out infinite',
 			},
 		},
 		screens: {

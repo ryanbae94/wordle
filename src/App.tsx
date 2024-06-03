@@ -25,6 +25,7 @@ function App() {
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(true);
 	const [isAiWinModalOpen, setIsAiWinModalOpen] = useState(false);
 	const [turn, setTurn] = useState(1);
+	const [aiTyping, setAiTyping] = useState(false);
 	const [cellValues, setCellValues] = useState<
 		{ letter: string; color: string }[][]
 	>(
@@ -32,21 +33,6 @@ function App() {
 			.fill(null)
 			.map(() => Array(5).fill({ letter: '', color: '' }))
 	);
-
-	const fetchAnswer = async () => {
-		const result = await searchWord(answer);
-		console.log(result);
-	};
-
-	// 게임이 시작할 때 마다 단어 뜻 미리 검색
-	// useEffect(() => {
-	// 	fetchAnswer();
-	// }, [answer]);
-
-	useEffect(() => {
-		console.log(answer);
-		console.log('mode: ', hardMode);
-	}, [answer, hardMode]);
 
 	const notWordToast = () => {
 		toast('올바른 단어가 아닙니다.\n다른 단어를 입력해 보세요.', {
@@ -157,8 +143,9 @@ function App() {
 	};
 
 	const aiGuessing = async () => {
-		const aiGuesses = aiGuess(hardMode, turn, cellValues);
+		const aiGuesses = aiGuess(turn, cellValues);
 		console.log('aiGuesses: ', aiGuesses);
+
 		if (aiGuesses) {
 			setCellValues((prev) => {
 				const newValues = prev.map((row, rowIndex) => {
@@ -205,7 +192,11 @@ function App() {
 
 	useEffect(() => {
 		if (aiMode && hardMode && turn % 2 === 1 && turn < 6) {
-			aiGuessing();
+			setAiTyping(true);
+			setTimeout(() => {
+				aiGuessing();
+				setAiTyping(false);
+			}, Math.floor(Math.random() * (4500 - 2000)) + 2000);
 		}
 	}, [aiMode, hardMode, turn, cellValues, answer, currentRow]);
 
@@ -266,7 +257,11 @@ function App() {
 				switchMode={handleMode}
 			/>
 
-			<Keyboard onKeyPress={handleKeyPress} cellValues={cellValues} />
+			<Keyboard
+				onKeyPress={handleKeyPress}
+				cellValues={cellValues}
+				aiTyping={aiTyping}
+			/>
 			<WinModal
 				isOpen={isWinModalOpen}
 				onClose={closeWinModalAndResetGame}
