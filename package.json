@@ -7,6 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "webpack serve --mode development",
 		"build": "webpack --mode production",
+		"prebuild": "npm run build",
 		"deploy": "gh-pages -d build"
 	},
 	"homepage": "https://ryanbae94.github.io/wordle/",
