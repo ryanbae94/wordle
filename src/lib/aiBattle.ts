@@ -1,11 +1,10 @@
 import { EASY_WORDS, HARD_WORDS } from '../const/5words';
 
 export const aiGuess = (
-	isHardMode: boolean,
 	turn: number,
 	cellValues: { letter: string; color: string }[][]
 ) => {
-	const WORDS = EASY_WORDS.concat(HARD_WORDS);
+	const WORDS = turn === 1 ? EASY_WORDS : EASY_WORDS.concat(HARD_WORDS);
 
 	if (turn === 1) {
 		return WORDS[Math.floor(Math.random() * WORDS.length)];
@@ -25,7 +24,7 @@ export const aiGuess = (
 						(word[i] === letter || !word.includes(letter))
 					)
 						return false;
-					if (color === 'gray' && word.includes(letter)) return false;
+					if (color === 'gray' && word[i] === letter) return false;
 				}
 				return true;
 			});
