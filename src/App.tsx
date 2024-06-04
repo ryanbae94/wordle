@@ -6,6 +6,7 @@ import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
 import { aiGuess } from './lib/aiGuess';
+import { searchWord } from './api/search';
 const AiWinModal = React.lazy(() => import('./component/modal/AiWinModal'));
 const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
 const WinModal = React.lazy(() => import('./component/modal/WinModal'));
@@ -41,6 +42,11 @@ function App() {
 			},
 		});
 	};
+
+	useEffect(() => {
+		const a = searchWord(answer);
+		console.log('a: ', a);
+	}, [answer]);
 
 	const notFiveCharToast = () => {
 		toast('단어는 5글자로 입력해 주세요.', {
