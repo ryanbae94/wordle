@@ -43,7 +43,6 @@ function App() {
 	// 첫 입장 시 EASY, ai off 모드로 시작
 	useEffect(() => {
 		const newAnswer = generateAnswer(gameMode);
-		console.log('genanswer');
 		setAnswer(newAnswer);
 	}, []);
 
