@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
 import { GameBoard, Header, Keyboard } from './component';
 import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
@@ -205,10 +204,13 @@ function App() {
 		let timer: NodeJS.Timeout;
 		if (aiMode && turn % 2 === 1 && turn < 6) {
 			setAiTyping(true);
-			timer = setTimeout(() => {
-				aiGuessing();
-				setAiTyping(false);
-			}, Math.floor(Math.random() * (4500 - 2000)) + 2000);
+			timer = setTimeout(
+				() => {
+					aiGuessing();
+					setAiTyping(false);
+				},
+				Math.floor(Math.random() * (4500 - 2000)) + 2000
+			);
 		}
 
 		return () => {
