@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { GameBoard, Header, Keyboard } from './component';
-import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
+import { ALL_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
@@ -47,10 +47,10 @@ function App() {
 		setAnswer(newAnswer);
 	}, []);
 
-	useEffect(() => {
-		console.log('answer: ', answer);
-		console.log('gameMode: ', gameMode);
-	}, [answer]);
+	// useEffect(() => {
+	// 	console.log('answer: ', answer);
+	// 	console.log('gameMode: ', gameMode);
+	// }, [answer]);
 
 	// 난이도가 변경되면 게임 리셋
 	useEffect(() => {
