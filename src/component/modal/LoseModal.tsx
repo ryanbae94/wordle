@@ -17,7 +17,7 @@ export default function LoseModal({
 	dict,
 }: ModalProps) {
 	return (
-		<BaseModal isOpen={isOpen} onClose={onClose} title='실패했습니다.'>
+		<BaseModal isOpen={isOpen} onClose={onClose} title='틀렸습니다.'>
 			<p className='text-sm text-gray-500'>다시 한 번 도전해 보세요.</p>
 			<div className='flex justify-center mb-1 mt-4'>
 				{Array.from({ length: answer.length }, (_, answerIndex) => (

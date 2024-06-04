@@ -1,6 +1,4 @@
 import React from 'react';
-import { Dict } from '../../types';
-import DictCard from './DictCard';
 
 type BaseModalProps = {
 	isOpen: boolean;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Cell, GameMode } from '../types';
 
 type GameBoardProps = {

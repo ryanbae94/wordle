@@ -17,7 +17,7 @@ export default function WinModal({
 	dict,
 }: ModalProps) {
 	return (
-		<BaseModal isOpen={isOpen} onClose={onClose} title='정답입니다!'>
+		<BaseModal isOpen={isOpen} onClose={onClose} title='맞았습니다!'>
 			<p className='text-sm text-gray-500'>당신의 재능이 부럽네요.</p>
 			<div className='flex justify-center mb-1 mt-4'>
 				{Array.from({ length: answer.length }, (_, answerIndex) => (
