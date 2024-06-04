@@ -1,6 +1,6 @@
 import { EASY_WORDS, HARD_WORDS } from '../../const/5words';
 
-export const aiGuess = (
+export const aiGuessing = (
 	turn: number,
 	cellValues: { letter: string; color: string }[][]
 ) => {

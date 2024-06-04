@@ -4,7 +4,7 @@ import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
-import { aiGuess } from './lib/game/aiGuess';
+import { aiGuessing } from './lib/game/aiGuessing';
 import { Cell, Dict, GameMode } from './types';
 import { generateAnswer } from './lib/game/generateAnswer';
 import { searchWord } from './api/search';
@@ -24,6 +24,7 @@ function App() {
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
 	const [guess, setGuess] = useState('');
+	const [aiGuess, setAiGuess] = useState('');
 	const [isWinModalOpen, setIsWinModalOpen] = useState(false);
 	const [isLoseModalOpen, setIsLoseModalOpen] = useState(false);
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(true);
@@ -56,6 +57,7 @@ function App() {
 		resetGame();
 	}, [gameMode]);
 
+	// 게임 시작 시 단어 사전 검색
 	useEffect(() => {
 		if (answer) {
 			const fetchDict = async () => {
@@ -125,7 +127,7 @@ function App() {
 		resetGame();
 	};
 
-	const openAiWinModal = (answer: string) => {
+	const openAiWinModal = () => {
 		setIsAiWinModalOpen(true);
 	};
 
@@ -159,11 +161,26 @@ function App() {
 	};
 
 	const isGameEnd = async () => {
-		if (guess === answer) {
-			openWinModal();
+		if (gameMode.aiMode) {
+			if (guess === answer) {
+				openAiLoseModal();
+			}
+			if (currentRow === 5 && aiGuess !== answer && guess !== answer) {
+				openAiDrawModal();
+			}
+		} else {
+			if (guess === answer) {
+				openWinModal();
+			}
+			if (currentRow === 5 && guess !== answer) {
+				openLoseModal();
+			}
 		}
-		if (currentRow === 5 && guess !== answer) {
-			openLoseModal();
+	};
+
+	const isAiGameEnd = async (aiGuesses: string) => {
+		if (aiGuesses === answer) {
+			openAiWinModal();
 		}
 	};
 
@@ -184,19 +201,17 @@ function App() {
 			return newValues;
 		});
 
-		setTimeout(() => {
-			isGameEnd();
-			setCurrentRow(Math.min(currentRow + 1, 6));
-			setGuess('');
-			setCurrentColumn(0);
-			setTurn(turn + 1);
-		}, 0);
+		isGameEnd();
+
+		setCurrentRow(Math.min(currentRow + 1, 6));
+		setGuess('');
+		setCurrentColumn(0);
+		setTurn(turn + 1);
 	};
 
-	const aiGuessing = async () => {
-		const aiGuesses = aiGuess(turn, cellValues);
-		console.log('aiGuesses: ', aiGuesses);
-
+	const handleAiGuessing = async () => {
+		const aiGuesses = aiGuessing(turn, cellValues);
+		setAiGuess(aiGuesses);
 		if (aiGuesses) {
 			setCellValues((prev) => {
 				const newValues = prev.map((row, rowIndex) => {
@@ -227,17 +242,10 @@ function App() {
 				}
 				return newValues;
 			});
-			isAiWin(aiGuesses);
+			isAiGameEnd(aiGuesses);
 			setCurrentRow((prev) => Math.min(prev + 1, 6));
-			setGuess('');
 			setCurrentColumn(0);
 			setTurn((prev) => prev + 1);
-		}
-	};
-
-	const isAiWin = (aiGuesses: string) => {
-		if (aiGuesses === answer) {
-			openAiWinModal(aiGuesses);
 		}
 	};
 
@@ -250,22 +258,23 @@ function App() {
 	};
 
 	useEffect(() => {
-		let timer: NodeJS.Timeout;
-		if (gameMode.aiMode && turn % 2 === 1 && turn < 6) {
-			setAiTyping(true);
-			timer = setTimeout(
-				() => {
-					aiGuessing();
-					setAiTyping(false);
-				},
-				Math.floor(Math.random() * (4500 - 2000)) + 2000
-			);
+		if (!isAiWinModalOpen && !isAiLoseModalOpen && !isAiDrawModalOpen) {
+			let timer: NodeJS.Timeout;
+			if (gameMode.aiMode && turn % 2 === 1 && turn < 6) {
+				setAiTyping(true);
+				timer = setTimeout(
+					() => {
+						handleAiGuessing();
+						setAiTyping(false);
+					},
+					Math.floor(Math.random() * (4500 - 2000)) + 2000
+				);
+			}
+			return () => {
+				clearTimeout(timer);
+				setAiTyping(false);
+			};
 		}
-
-		return () => {
-			clearTimeout(timer);
-			setAiTyping(false);
-		};
 	}, [gameMode, turn, cellValues, answer, currentRow]);
 
 	const handleKeyPress = (key: string) => {
@@ -283,12 +292,11 @@ function App() {
 			}
 		} else if (key === 'enter') {
 			if (currentColumn === 5) {
-				console.log('guess: ', guess);
-
 				if (!ALL_WORDS.includes(guess)) {
 					notWordToast();
 					return;
 				}
+
 				guessing();
 			} else {
 				notFiveCharToast();
