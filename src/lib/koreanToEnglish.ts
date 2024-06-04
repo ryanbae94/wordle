@@ -28,6 +28,5 @@ const koreanToEnglishMap: { [key: string]: string } = {
 };
 
 export const koreanToEnglish = (char: string): string => {
-	console.log(char);
 	return koreanToEnglishMap[char] || char;
 };
