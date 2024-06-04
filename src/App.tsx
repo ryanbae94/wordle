@@ -40,6 +40,24 @@ function App() {
 			.map(() => Array(5).fill({ letter: '', color: '' }))
 	);
 
+	useEffect(() => {
+		console.log(
+			'%c제가 만든 게임을 이용해 주셔서 감사합니다!',
+			'color: black; font-size: 20px; font-weight: bold; background: white'
+		);
+		console.log(
+			'%c소스 코드를 보시려면 아래 링크로 이동해주세요.',
+			'color: black; font-size: 16px; background: white'
+		);
+		console.log('>> https://github.com/ryanbae94/wordle <<');
+
+		console.log(
+			'%c버그, 문의 사항이 있을 경우 아래 주소로 메일을 보내주세요.',
+			'color: black; font-size: 16px; background: white'
+		);
+		console.log('>> ryanbae94@gmail.com <<');
+	}, []);
+
 	// 첫 입장 시 EASY, ai off 모드로 시작
 	useEffect(() => {
 		const newAnswer = generateAnswer(gameMode);
