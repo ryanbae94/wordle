@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
+import { Cell, GameMode } from '../types';
 
 type GameBoardProps = {
-	cellValues: { letter: string; color: string }[][];
-	mode: boolean;
-	aiMode: boolean;
+	cellValues: Cell[][];
+	gameMode: GameMode;
 	switchMode: () => void;
 	switchAiMode: () => void;
 };
 
 export default function GameBoard({
 	cellValues,
-	mode,
-	aiMode,
+	gameMode,
 	switchMode,
 	switchAiMode,
 }: GameBoardProps) {
@@ -56,7 +55,7 @@ export default function GameBoard({
 						className='text-xs text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
 						onClick={switchMode}
 					>
-						{mode ? 'Hard' : 'Easy'}
+						{gameMode.mode === 'hard' ? 'Hard' : 'Easy'}
 					</button>
 				</div>
 				<div className='flex justify-center items-center gap-2'>
@@ -65,7 +64,7 @@ export default function GameBoard({
 						className='text-xs text-indigo-700 rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-100 font-medium hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 lg:text-sm uppercase'
 						onClick={switchAiMode}
 					>
-						{aiMode ? 'ON' : 'OFF'}
+						{gameMode.aiMode ? 'ON' : 'OFF'}
 					</button>
 				</div>
 			</div>

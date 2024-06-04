@@ -4,9 +4,19 @@ type ModalProps = {
 	isOpen: boolean;
 	onClose: () => void;
 	answer: string;
+	dict: {
+		type: string;
+		trans: string;
+		example: string;
+	};
 };
 
-export default function WinModal({ isOpen, onClose, answer }: ModalProps) {
+export default function WinModal({
+	isOpen,
+	onClose,
+	answer,
+	dict,
+}: ModalProps) {
 	if (!isOpen) return null;
 
 	return (
@@ -26,6 +36,17 @@ export default function WinModal({ isOpen, onClose, answer }: ModalProps) {
 										</div>
 									);
 								})}
+							</div>
+							<div className='flex flex-col'>
+								<div className='flex justify-start'>
+									<p className='text-lg font-bold'>
+										{dict.trans}{' '}
+										<span className='text-sm text-gray-500'>{dict.type}</span>
+									</p>
+								</div>
+								<p className='text-sm text-gray-500 flex justify-start'>
+									{dict.example}
+								</p>
 							</div>
 						</div>
 					</div>

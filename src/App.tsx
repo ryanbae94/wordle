@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
 import { aiGuess } from './lib/aiGuess';
 import { searchWord } from './api/search';
+import { Cell, Dict, GameMode } from './types';
 const AiWinModal = React.lazy(() => import('./component/modal/AiWinModal'));
 const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
 const WinModal = React.lazy(() => import('./component/modal/WinModal'));
@@ -14,8 +15,12 @@ function App() {
 	const [answer, setAnswer] = useState(
 		EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]
 	);
-	const [hardMode, setHardMode] = useState(false);
-	const [aiMode, setAiMode] = useState(false);
+	// const [hardMode, setHardMode] = useState(false);
+	// const [aiMode, setAiMode] = useState(false);
+	const [gameMode, setGameMode] = useState<GameMode>({
+		mode: 'easy',
+		aiMode: false,
+	});
 	const [currentRow, setCurrentRow] = useState(0);
 	const [currentColumn, setCurrentColumn] = useState(0);
 	const [guess, setGuess] = useState('');
@@ -23,11 +28,10 @@ function App() {
 	const [isLoseModalOpen, setIsLoseModalOpen] = useState(false);
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(true);
 	const [isAiWinModalOpen, setIsAiWinModalOpen] = useState(false);
+	const [dict, setDict] = useState<Dict | null>(null);
 	const [turn, setTurn] = useState(1);
 	const [aiTyping, setAiTyping] = useState(false);
-	const [cellValues, setCellValues] = useState<
-		{ letter: string; color: string }[][]
-	>(
+	const [cellValues, setCellValues] = useState<Cell[][]>(
 		Array(6)
 			.fill(null)
 			.map(() => Array(5).fill({ letter: '', color: '' }))
@@ -43,8 +47,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		const a = searchWord(answer);
-		console.log('a: ', a);
+		console.log('answer: ', answer);
 	}, [answer]);
 
 	const notFiveCharToast = () => {
@@ -57,26 +60,29 @@ function App() {
 	};
 
 	const handleMode = () => {
-		const newMode = !hardMode;
-		setHardMode(newMode);
-		resetGame(newMode);
+		const newMode = gameMode.mode === 'easy' ? 'hard' : 'easy';
+		setGameMode({
+			...gameMode,
+			mode: newMode,
+		});
+		resetGame(gameMode);
 	};
 
-	const openWinModal = (answer: string) => {
+	const openWinModal = () => {
 		setIsWinModalOpen(true);
 	};
 
 	const closeWinModalAndResetGame = () => {
 		setIsWinModalOpen(false);
-		resetGame(hardMode);
+		resetGame(gameMode);
 	};
-	const openLoseModal = (answer: string) => {
+	const openLoseModal = () => {
 		setIsLoseModalOpen(true);
 	};
 
 	const closeLoseModalAndResetGame = () => {
 		setIsLoseModalOpen(false);
-		resetGame(hardMode);
+		resetGame(gameMode);
 	};
 
 	const openAiWinModal = (answer: string) => {
@@ -85,7 +91,7 @@ function App() {
 
 	const closeAiWinModalAndResetGame = () => {
 		setIsAiWinModalOpen(false);
-		resetGame(hardMode);
+		resetGame(gameMode);
 	};
 
 	const openHelpModal = () => {
@@ -95,7 +101,7 @@ function App() {
 		setIsHelpModalOpen(false);
 	};
 
-	const resetGame = (mode: boolean) => {
+	const resetGame = (mode: GameMode) => {
 		setCurrentRow(0);
 		setCurrentColumn(0);
 		setTurn(1);
@@ -105,18 +111,26 @@ function App() {
 				.fill(null)
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
-		const newAnswer = mode
-			? HARD_WORDS[Math.floor(Math.random() * HARD_WORDS.length)]
-			: EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)];
+		const newAnswer =
+			mode.mode === 'hard'
+				? HARD_WORDS[Math.floor(Math.random() * HARD_WORDS.length)]
+				: EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)];
 		setAnswer(newAnswer);
 	};
 
-	const isGameEnd = () => {
+	useEffect(() => {
+		const fetchDict = async () => {
+			const data = await searchWord(answer, 'english-korean');
+			return data;
+		};
+	});
+
+	const isGameEnd = async () => {
 		if (guess === answer) {
-			openWinModal(answer);
+			openWinModal();
 		}
 		if (currentRow === 5 && guess !== answer) {
-			openLoseModal(answer);
+			openLoseModal();
 		}
 	};
 
@@ -195,14 +209,17 @@ function App() {
 	};
 
 	const handleAiMode = () => {
-		const newMode = !aiMode;
-		setAiMode(newMode);
-		resetGame(newMode);
+		const newMode = !gameMode.aiMode;
+		setGameMode({
+			...gameMode,
+			aiMode: newMode,
+		});
+		resetGame(gameMode);
 	};
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout;
-		if (aiMode && turn % 2 === 1 && turn < 6) {
+		if (gameMode.aiMode && turn % 2 === 1 && turn < 6) {
 			setAiTyping(true);
 			timer = setTimeout(
 				() => {
@@ -217,7 +234,7 @@ function App() {
 			clearTimeout(timer);
 			setAiTyping(false);
 		};
-	}, [aiMode, turn, cellValues, answer, currentRow]);
+	}, [gameMode, turn, cellValues, answer, currentRow]);
 
 	const handleKeyPress = (key: string) => {
 		if (key === 'del') {
@@ -272,9 +289,8 @@ function App() {
 			<Header onHelpClick={openHelpModal} />
 			<GameBoard
 				cellValues={cellValues}
-				mode={hardMode}
+				gameMode={gameMode}
 				switchMode={handleMode}
-				aiMode={aiMode}
 				switchAiMode={handleAiMode}
 			/>
 
@@ -283,11 +299,12 @@ function App() {
 				cellValues={cellValues}
 				aiTyping={aiTyping}
 			/>
-			<WinModal
+			{/* <WinModal
 				isOpen={isWinModalOpen}
 				onClose={closeWinModalAndResetGame}
 				answer={answer}
-			/>
+				dict={dict}
+			/> */}
 			<LoseModal
 				isOpen={isLoseModalOpen}
 				onClose={closeLoseModalAndResetGame}
