@@ -15,5 +15,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	args: {
 		answer: 'TESTT',
+		dict: {
+			word: 'TEST',
+			type: 'noun',
+			definition: '테스트',
+			example: '테스트 예시',
+		},
 	},
 };

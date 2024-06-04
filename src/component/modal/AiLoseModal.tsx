@@ -10,15 +10,15 @@ type ModalProps = {
 	dict: Dict;
 };
 
-export default function WinModal({
+export default function AiLoseModal({
 	isOpen,
 	onClose,
 	answer,
 	dict,
 }: ModalProps) {
 	return (
-		<BaseModal isOpen={isOpen} onClose={onClose} title='정답입니다!'>
-			<p className='text-sm text-gray-500'>당신의 재능이 부럽네요.</p>
+		<BaseModal isOpen={isOpen} onClose={onClose} title='이겼습니다!'>
+			<p className='text-sm text-gray-500'>휴먼은 강력합니다.</p>
 			<div className='flex justify-center mb-1 mt-4'>
 				{Array.from({ length: answer.length }, (_, answerIndex) => (
 					<div className='w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-2xl font-bold rounded bg-green-200 border-black cell-animation uppercase'>

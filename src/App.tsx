@@ -4,19 +4,19 @@ import { ALL_WORDS, HARD_WORDS, EASY_WORDS } from './const/5words';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { InfoModal } from './component/modal';
-import { aiGuess } from './lib/aiGuess';
-import { searchWord } from './api/search';
+import { aiGuess } from './lib/game/aiGuess';
 import { Cell, Dict, GameMode } from './types';
+import { generateAnswer } from './lib/game/generateAnswer';
+import { searchWord } from './api/search';
+import { convertDictResponse } from './lib/convertDictResponse';
+import AiLoseModal from './component/modal/AiLoseModal';
+import AiDrawModal from './component/modal/AiDrawModal';
 const AiWinModal = React.lazy(() => import('./component/modal/AiWinModal'));
 const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
 const WinModal = React.lazy(() => import('./component/modal/WinModal'));
 
 function App() {
-	const [answer, setAnswer] = useState(
-		EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)]
-	);
-	// const [hardMode, setHardMode] = useState(false);
-	// const [aiMode, setAiMode] = useState(false);
+	const [answer, setAnswer] = useState('');
 	const [gameMode, setGameMode] = useState<GameMode>({
 		mode: 'easy',
 		aiMode: false,
@@ -28,6 +28,8 @@ function App() {
 	const [isLoseModalOpen, setIsLoseModalOpen] = useState(false);
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(true);
 	const [isAiWinModalOpen, setIsAiWinModalOpen] = useState(false);
+	const [isAiLoseModalOpen, setIsAiLoseModalOpen] = useState(false);
+	const [isAiDrawModalOpen, setIsAiDrawModalOpen] = useState(false);
 	const [dict, setDict] = useState<Dict | null>(null);
 	const [turn, setTurn] = useState(1);
 	const [aiTyping, setAiTyping] = useState(false);
@@ -37,6 +39,34 @@ function App() {
 			.map(() => Array(5).fill({ letter: '', color: '' }))
 	);
 
+	// 첫 입장 시 EASY, ai off 모드로 시작
+	useEffect(() => {
+		const newAnswer = generateAnswer(gameMode);
+		console.log('genanswer');
+		setAnswer(newAnswer);
+	}, []);
+
+	useEffect(() => {
+		console.log('answer: ', answer);
+		console.log('gameMode: ', gameMode);
+	}, [answer]);
+
+	// 난이도가 변경되면 게임 리셋
+	useEffect(() => {
+		resetGame();
+	}, [gameMode]);
+
+	useEffect(() => {
+		if (answer) {
+			const fetchDict = async () => {
+				const data = await searchWord(answer);
+				const dict = convertDictResponse(data);
+				setDict(dict as Dict);
+			};
+			fetchDict();
+		}
+	}, [answer]);
+
 	const notWordToast = () => {
 		toast('올바른 단어가 아닙니다.', {
 			duration: 2000,
@@ -45,10 +75,6 @@ function App() {
 			},
 		});
 	};
-
-	useEffect(() => {
-		console.log('answer: ', answer);
-	}, [answer]);
 
 	const notFiveCharToast = () => {
 		toast('단어는 5글자로 입력해 주세요.', {
@@ -65,43 +91,9 @@ function App() {
 			...gameMode,
 			mode: newMode,
 		});
-		resetGame(gameMode);
 	};
 
-	const openWinModal = () => {
-		setIsWinModalOpen(true);
-	};
-
-	const closeWinModalAndResetGame = () => {
-		setIsWinModalOpen(false);
-		resetGame(gameMode);
-	};
-	const openLoseModal = () => {
-		setIsLoseModalOpen(true);
-	};
-
-	const closeLoseModalAndResetGame = () => {
-		setIsLoseModalOpen(false);
-		resetGame(gameMode);
-	};
-
-	const openAiWinModal = (answer: string) => {
-		setIsAiWinModalOpen(true);
-	};
-
-	const closeAiWinModalAndResetGame = () => {
-		setIsAiWinModalOpen(false);
-		resetGame(gameMode);
-	};
-
-	const openHelpModal = () => {
-		setIsHelpModalOpen(true);
-	};
-	const closeHelpModal = () => {
-		setIsHelpModalOpen(false);
-	};
-
-	const resetGame = (mode: GameMode) => {
+	const resetGame = () => {
 		setCurrentRow(0);
 		setCurrentColumn(0);
 		setTurn(1);
@@ -111,19 +103,60 @@ function App() {
 				.fill(null)
 				.map(() => Array(5).fill({ letter: '', color: '' }))
 		);
-		const newAnswer =
-			mode.mode === 'hard'
-				? HARD_WORDS[Math.floor(Math.random() * HARD_WORDS.length)]
-				: EASY_WORDS[Math.floor(Math.random() * EASY_WORDS.length)];
+		const newAnswer = generateAnswer(gameMode);
+
 		setAnswer(newAnswer);
 	};
 
-	useEffect(() => {
-		const fetchDict = async () => {
-			const data = await searchWord(answer, 'english-korean');
-			return data;
-		};
-	});
+	const openWinModal = () => {
+		setIsWinModalOpen(true);
+	};
+
+	const closeWinModalAndResetGame = () => {
+		setIsWinModalOpen(false);
+		resetGame();
+	};
+	const openLoseModal = () => {
+		setIsLoseModalOpen(true);
+	};
+
+	const closeLoseModalAndResetGame = () => {
+		setIsLoseModalOpen(false);
+		resetGame();
+	};
+
+	const openAiWinModal = (answer: string) => {
+		setIsAiWinModalOpen(true);
+	};
+
+	const closeAiWinModalAndResetGame = () => {
+		setIsAiWinModalOpen(false);
+		resetGame();
+	};
+	const openAiLoseModal = () => {
+		setIsAiLoseModalOpen(true);
+	};
+
+	const closeAiLoseModalAndResetGame = () => {
+		setIsAiLoseModalOpen(false);
+		resetGame();
+	};
+
+	const openAiDrawModal = () => {
+		setIsAiDrawModalOpen(true);
+	};
+
+	const closeAiDrawModalAndResetGame = () => {
+		setIsAiDrawModalOpen(false);
+		resetGame();
+	};
+
+	const openHelpModal = () => {
+		setIsHelpModalOpen(true);
+	};
+	const closeHelpModal = () => {
+		setIsHelpModalOpen(false);
+	};
 
 	const isGameEnd = async () => {
 		if (guess === answer) {
@@ -214,7 +247,6 @@ function App() {
 			...gameMode,
 			aiMode: newMode,
 		});
-		resetGame(gameMode);
 	};
 
 	useEffect(() => {
@@ -299,25 +331,37 @@ function App() {
 				cellValues={cellValues}
 				aiTyping={aiTyping}
 			/>
-			{/* <WinModal
+			<WinModal
 				isOpen={isWinModalOpen}
 				onClose={closeWinModalAndResetGame}
 				answer={answer}
-				dict={dict}
-			/> */}
+				dict={dict as Dict}
+			/>
 			<LoseModal
 				isOpen={isLoseModalOpen}
 				onClose={closeLoseModalAndResetGame}
 				answer={answer}
+				dict={dict as Dict}
 			/>
 			<AiWinModal
 				isOpen={isAiWinModalOpen}
 				onClose={closeAiWinModalAndResetGame}
 				answer={answer}
+				dict={dict as Dict}
 			/>
-			{isHelpModalOpen && (
-				<InfoModal isOpen={isHelpModalOpen} onClose={closeHelpModal} />
-			)}
+			<AiLoseModal
+				isOpen={isAiLoseModalOpen}
+				onClose={closeAiLoseModalAndResetGame}
+				answer={answer}
+				dict={dict as Dict}
+			/>
+			<AiDrawModal
+				isOpen={isAiDrawModalOpen}
+				onClose={closeAiDrawModalAndResetGame}
+				answer={answer}
+				dict={dict as Dict}
+			/>
+			<InfoModal isOpen={isHelpModalOpen} onClose={closeHelpModal} />
 		</div>
 	);
 }
