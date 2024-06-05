@@ -24,7 +24,7 @@ export default function GameBoard({
 					{Array.from({ length: columns }, (_, columnIndex) => {
 						const cell = cellValues[rowIndex][columnIndex];
 						let cellClassName =
-							'flex items-center justify-center border-2 border-solid rounded m-1 h-11 w-11 sm:h-14 sm:w-14 lg:h-20 lg:w-20 text-4xl font-bold uppercase';
+							'flex items-center justify-center border-2 border-solid rounded m-1 h-11 w-11 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-4xl font-bold uppercase';
 						if (cell.color) {
 							if (cell.color === 'gray') {
 								cellClassName += ` bg-${cell.color}-400 animate-pop-in-bg-color`;
