@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { GameBoard, Header, Keyboard } from './component';
 import { ALL_WORDS } from './const/5words';
 
@@ -9,8 +9,13 @@ import { Cell, Dict, GameMode } from './types';
 import { generateAnswer } from './lib/game/generateAnswer';
 import { searchWord } from './api/search';
 import { convertDictResponse } from './lib/convertDictResponse';
-import AiLoseModal from './component/modal/AiLoseModal';
-import AiDrawModal from './component/modal/AiDrawModal';
+// import AiLoseModal from './component/modal/AiLoseModal';
+// import AiDrawModal from './component/modal/AiDrawModal';
+// import AiWinModal from './component/modal/AiWinModal';
+// import LoseModal from './component/modal/LoseModal';
+// import WinModal from './component/modal/WinModal';
+const AiLoseModal = React.lazy(() => import('./component/modal/AiLoseModal'));
+const AiDrawModal = React.lazy(() => import('./component/modal/AiDrawModal'));
 const AiWinModal = React.lazy(() => import('./component/modal/AiWinModal'));
 const LoseModal = React.lazy(() => import('./component/modal/LoseModal'));
 const WinModal = React.lazy(() => import('./component/modal/WinModal'));
@@ -356,36 +361,39 @@ function App() {
 				cellValues={cellValues}
 				aiTyping={aiTyping}
 			/>
-			<WinModal
-				isOpen={isWinModalOpen}
-				onClose={closeWinModalAndResetGame}
-				answer={answer}
-				dict={dict as Dict}
-			/>
-			<LoseModal
-				isOpen={isLoseModalOpen}
-				onClose={closeLoseModalAndResetGame}
-				answer={answer}
-				dict={dict as Dict}
-			/>
-			<AiWinModal
-				isOpen={isAiWinModalOpen}
-				onClose={closeAiWinModalAndResetGame}
-				answer={answer}
-				dict={dict as Dict}
-			/>
-			<AiLoseModal
-				isOpen={isAiLoseModalOpen}
-				onClose={closeAiLoseModalAndResetGame}
-				answer={answer}
-				dict={dict as Dict}
-			/>
-			<AiDrawModal
-				isOpen={isAiDrawModalOpen}
-				onClose={closeAiDrawModalAndResetGame}
-				answer={answer}
-				dict={dict as Dict}
-			/>
+			<Suspense fallback={<div>Loading...</div>}>
+				<WinModal
+					isOpen={isWinModalOpen}
+					onClose={closeWinModalAndResetGame}
+					answer={answer}
+					dict={dict as Dict}
+				/>
+				<LoseModal
+					isOpen={isLoseModalOpen}
+					onClose={closeLoseModalAndResetGame}
+					answer={answer}
+					dict={dict as Dict}
+				/>
+
+				<AiWinModal
+					isOpen={isAiWinModalOpen}
+					onClose={closeAiWinModalAndResetGame}
+					answer={answer}
+					dict={dict as Dict}
+				/>
+				<AiLoseModal
+					isOpen={isAiLoseModalOpen}
+					onClose={closeAiLoseModalAndResetGame}
+					answer={answer}
+					dict={dict as Dict}
+				/>
+				<AiDrawModal
+					isOpen={isAiDrawModalOpen}
+					onClose={closeAiDrawModalAndResetGame}
+					answer={answer}
+					dict={dict as Dict}
+				/>
+			</Suspense>
 			<InfoModal isOpen={isHelpModalOpen} onClose={closeHelpModal} />
 		</div>
 	);

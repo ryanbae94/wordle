@@ -4,7 +4,7 @@ type HeaderProps = {
 	onHelpClick: () => void;
 };
 
-export default function Header({ onHelpClick }: HeaderProps) {
+const Header = ({ onHelpClick }: HeaderProps) => {
 	const clickHelp = () => {
 		onHelpClick();
 	};
@@ -72,4 +72,6 @@ export default function Header({ onHelpClick }: HeaderProps) {
 			</div>
 		</div>
 	);
-}
+};
+
+export default Header;
