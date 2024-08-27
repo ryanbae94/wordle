@@ -13,6 +13,12 @@ export default function DictCard({ dict }: DictCardProps) {
 					{dict.word} <span className='text-sm text-gray-400'>{dict.type}</span>
 				</p>
 			</div>
+			<div className='flex justify-start'>
+				<p className='text-xl font-bold'>
+					현재 API 데이터가 만료되어 사전 정보를 제공할 수 없습니다. 빠른 시일
+					내에 정상화 하겠습니다 ㅠ.ㅠ
+				</p>
+			</div>
 			<div className='text-sm text-gray-600 flex justify-start'>
 				<p className='text-left'>{dict.definition}</p>
 			</div>
